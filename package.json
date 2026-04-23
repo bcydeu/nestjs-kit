@@ -97,6 +97,7 @@
     "@nestjs/jwt": "^11.0.2",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/swagger": "^11.4.1",
+    "@nestjs/testing": "^11.1.19",
     "@nestjs/throttler": "^6.5.0",
     "@sentry/nestjs": "^10.50.0",
     "@types/express": "^5.0.6",
