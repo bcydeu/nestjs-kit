@@ -1,1 +1,2 @@
-export const KIT_SUBPATH = 'orm';
+export * from './base.entity';
+export * from './mikro-orm.helper';

@@ -8,6 +8,7 @@ export default defineConfig({
     'email/index': 'src/email/index.ts',
     'logging/index': 'src/logging/index.ts',
     'orm/index': 'src/orm/index.ts',
+    'orm/pool/index': 'src/orm/pool/index.ts',
   },
   format: ['cjs', 'esm'],
   dts: true,
@@ -37,6 +38,9 @@ export default defineConfig({
     'passport-jwt',
     '@sentry/nestjs',
     '@willsoto/nestjs-prometheus',
+    'prom-client',
     'resend',
+    'passport',
+    'express',
   ],
 });
