@@ -1,6 +1,6 @@
 {
   "name": "@yunhak/nestjs-kit",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "NestJS 공용 인프라 모음 — 개인 프로젝트용 스타터 키트",
   "license": "MIT",
   "author": "JOOYUNHAK",

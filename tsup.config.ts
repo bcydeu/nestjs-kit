@@ -42,5 +42,7 @@ export default defineConfig({
     'resend',
     'passport',
     'express',
+    'rxjs',
+    'rxjs/operators',
   ],
 });
