@@ -1,7 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MikroORM } from '@mikro-orm/core';
 import { makeGaugeProvider } from '@willsoto/nestjs-prometheus';
-import { Gauge } from 'prom-client';
+
+interface PoolInternal {
+  totalCount?: number;
+  idleCount?: number;
+  waitingCount?: number;
+  min?: number;
+  max?: number;
+}
 
 /**
  * Database Connection Pool 모니터링 서비스
@@ -20,7 +27,8 @@ export class PoolMonitorService {
   async getPoolStatus() {
     try {
       const connection = this.orm.em.getConnection();
-      const pool = (connection as any).client?.pool;
+      // mikro-orm Connection 타입에 driver-internal client/pool이 노출되지 않음
+      const pool = (connection as unknown as { client?: { pool?: PoolInternal } }).client?.pool;
 
       if (!pool) {
         this.logger.warn('Pool information not available');

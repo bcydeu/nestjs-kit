@@ -1,5 +1,5 @@
 import { Entity, Property } from '@mikro-orm/core';
-import { plainToInstance } from 'class-transformer';
+import { classToPlain, plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 import { BaseEntity } from '../base.entity';
 
@@ -19,7 +19,7 @@ describe('BaseEntity', () => {
       });
 
       const errors = validateSync(instance);
-      const idError = errors.find(e => e.property === 'id');
+      const idError = errors.find((e) => e.property === 'id');
 
       expect(idError?.constraints).toBeDefined();
     });
@@ -32,7 +32,7 @@ describe('BaseEntity', () => {
       });
 
       const errors = validateSync(instance);
-      const createdAtError = errors.find(e => e.property === 'createdAt');
+      const createdAtError = errors.find((e) => e.property === 'createdAt');
 
       expect(createdAtError?.constraints).toBeDefined();
     });
@@ -45,7 +45,7 @@ describe('BaseEntity', () => {
       });
 
       const errors = validateSync(instance);
-      const updatedAtError = errors.find(e => e.property === 'updatedAt');
+      const updatedAtError = errors.find((e) => e.property === 'updatedAt');
 
       expect(updatedAtError).toBeUndefined();
     });
@@ -71,7 +71,6 @@ describe('BaseEntity', () => {
       child.createdAt = new Date();
       child.deletedAt = new Date();
 
-      const { classToPlain } = require('class-transformer');
       const plain = classToPlain(child);
 
       expect(plain).not.toHaveProperty('deletedAt');

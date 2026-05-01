@@ -24,7 +24,7 @@ export function ApiStandardResponse<T>(
   options?: {
     summary?: string;
     description?: string;
-    successExample?: any;
+    successExample?: unknown;
     isArray?: boolean;
     status?: number;
     errorTypes?: (
@@ -90,7 +90,7 @@ export function ApiCreateResponse<T>(
   options?: {
     summary?: string;
     description?: string;
-    example?: any;
+    example?: unknown;
   },
 ) {
   return ApiStandardResponse(dataDto, {
@@ -116,7 +116,7 @@ export function ApiGetResponse<T>(
   options?: {
     summary?: string;
     description?: string;
-    example?: any;
+    example?: unknown;
     isArray?: boolean;
   },
 ) {
@@ -142,18 +142,12 @@ export function ApiUpdateResponse<T>(
   options?: {
     summary?: string;
     description?: string;
-    example?: any;
+    example?: unknown;
   },
 ) {
   return ApiStandardResponse(dataDto, {
     ...options,
-    errorTypes: [
-      'BAD_REQUEST',
-      'NOT_FOUND',
-      'UNAUTHORIZED',
-      'FORBIDDEN',
-      'CONFLICT',
-    ],
+    errorTypes: ['BAD_REQUEST', 'NOT_FOUND', 'UNAUTHORIZED', 'FORBIDDEN', 'CONFLICT'],
   });
 }
 
@@ -171,7 +165,7 @@ export function ApiUpdateResponse<T>(
 export function ApiDeleteResponse(options?: {
   summary?: string;
   description?: string;
-  example?: any;
+  example?: unknown;
 }) {
   return ApiStandardResponse(undefined, {
     ...options,

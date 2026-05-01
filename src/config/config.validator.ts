@@ -1,7 +1,7 @@
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 
-export type ConfigEnvMapper<T> = (env: Record<string, any>) => T;
+export type ConfigEnvMapper<T> = (env: Record<string, unknown>) => T;
 
 /**
  * `ConfigModule.forRoot({ validate })`에 꽂을 검증 콜백을 생성한다.
@@ -18,8 +18,8 @@ export type ConfigEnvMapper<T> = (env: Record<string, any>) => T;
 export function createConfigValidator<T extends object>(
   DtoClass: ClassConstructor<T>,
   mapper: ConfigEnvMapper<T>,
-): (config: Record<string, any>) => Record<string, any> {
-  return (config: Record<string, any>) => {
+): (config: Record<string, unknown>) => Record<string, unknown> {
+  return (config: Record<string, unknown>) => {
     const dto = plainToInstance(DtoClass, mapper(config), {
       enableImplicitConversion: true,
     });

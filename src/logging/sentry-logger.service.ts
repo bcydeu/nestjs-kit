@@ -1,10 +1,7 @@
-import {
-  ConsoleLogger,
-  Inject,
-  Injectable,
-  Optional,
-  Scope,
-} from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// NestJS ConsoleLogger override 시그니처가 message:any 를 강제하므로 파일 단위 허용.
+
+import { ConsoleLogger, Inject, Injectable, Optional, Scope } from '@nestjs/common';
 import { loadSentry } from './sentry.loader';
 import {
   DEFAULT_IGNORED_CONTEXTS,
@@ -24,11 +21,8 @@ export class SentryLoggerService extends ConsoleLogger {
     options?: SentryLoggerOptions,
   ) {
     super();
-    this.ignoredContexts = new Set(
-      options?.ignoredContexts ?? DEFAULT_IGNORED_CONTEXTS,
-    );
-    this.isProductionFn =
-      options?.isProduction ?? (() => process.env.NODE_ENV === 'production');
+    this.ignoredContexts = new Set(options?.ignoredContexts ?? DEFAULT_IGNORED_CONTEXTS);
+    this.isProductionFn = options?.isProduction ?? (() => process.env.NODE_ENV === 'production');
   }
 
   private get isProduction(): boolean {
@@ -43,20 +37,15 @@ export class SentryLoggerService extends ConsoleLogger {
     }
 
     const logContext = typeof message === 'object' ? message : { message };
-    const extraContext = optionalParams.length
-      ? { args: optionalParams }
-      : {};
+    const extraContext = optionalParams.length ? { args: optionalParams } : {};
 
     if (this.sentry.logger) {
-      this.sentry.logger.info(
-        typeof message === 'string' ? message : JSON.stringify(message),
-        {
-          ...logContext,
-          ...extraContext,
-          logger: 'SentryLogger',
-          context: this.getContextName(optionalParams),
-        },
-      );
+      this.sentry.logger.info(typeof message === 'string' ? message : JSON.stringify(message), {
+        ...logContext,
+        ...extraContext,
+        logger: 'SentryLogger',
+        context: this.getContextName(optionalParams),
+      });
     }
   }
 

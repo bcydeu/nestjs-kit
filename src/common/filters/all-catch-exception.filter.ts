@@ -24,7 +24,7 @@ export class AllCatchExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllCatchExceptionFilter.name);
 
   @SentryExceptionCaptured()
-  catch(exception: any, host: ArgumentsHost) {
+  catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
@@ -33,7 +33,7 @@ export class AllCatchExceptionFilter implements ExceptionFilter {
 
     if (exception instanceof HttpException) {
       statusCode = exception.getStatus();
-      const payload = exception.getResponse() as { uiMessage: UiMessages };
+      const payload = exception.getResponse() as { uiMessage?: UiMessages };
       uiMessage = payload.uiMessage ?? (exception.message as UiMessages);
     } else {
       statusCode = HttpStatus.INTERNAL_SERVER_ERROR;

@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
  * 성공 응답 DTO
  * 모든 성공적인 API 응답은 이 형식을 따릅니다.
  */
-export class SuccessResponseDto<T = any> {
+export class SuccessResponseDto<T = unknown> {
   @ApiProperty({
     description: '응답 상태',
     example: 'success',
@@ -80,7 +80,7 @@ export class PaginationMetaDto {
 /**
  * 페이지네이션 응답 DTO
  */
-export class PaginatedResponseDto<T = any> {
+export class PaginatedResponseDto<T = unknown> {
   @ApiProperty({
     description: '응답 상태',
     example: 'success',

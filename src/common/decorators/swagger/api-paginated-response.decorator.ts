@@ -1,9 +1,6 @@
 import { applyDecorators, Type } from '@nestjs/common';
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
-import {
-  PaginatedResponseDto,
-  PaginationMetaDto,
-} from '../../dto/response.dto';
+import { PaginatedResponseDto, PaginationMetaDto } from '../../dto/response.dto';
 
 /**
  * Swagger 페이지네이션 응답 데코레이터
@@ -21,7 +18,7 @@ export function ApiPaginatedResponse<T>(
   options?: {
     summary?: string;
     description?: string;
-    example?: any[];
+    example?: unknown[];
   },
 ) {
   const {
@@ -50,20 +47,22 @@ export function ApiPaginatedResponse<T>(
             },
           },
         ],
-        ...(example && {
-          example: {
-            status: 'success',
-            data: example,
-            meta: {
-              page: 1,
-              limit: 10,
-              total: 100,
-              totalPages: 10,
-              hasNext: true,
-              hasPrevious: false,
-            },
-          },
-        }),
+        ...(example !== undefined
+          ? {
+              example: {
+                status: 'success',
+                data: example,
+                meta: {
+                  page: 1,
+                  limit: 10,
+                  total: 100,
+                  totalPages: 10,
+                  hasNext: true,
+                  hasPrevious: false,
+                },
+              },
+            }
+          : {}),
       },
     }),
   );

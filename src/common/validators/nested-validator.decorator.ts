@@ -1,20 +1,16 @@
 import { IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { ClassConstructor, Type } from 'class-transformer';
 import { applyDecorators } from '@nestjs/common';
 
 export interface NestedValidatorOptions {
-  type: () => Function;
+  type: () => ClassConstructor<unknown>;
   optional?: boolean;
   each?: boolean;
 }
 
-export type NestedValidatorType = (
-  opts: NestedValidatorOptions,
-) => PropertyDecorator;
+export type NestedValidatorType = (opts: NestedValidatorOptions) => PropertyDecorator;
 
-export function NestedValidator(
-  options: NestedValidatorOptions,
-): PropertyDecorator {
+export function NestedValidator(options: NestedValidatorOptions): PropertyDecorator {
   const decorators: PropertyDecorator[] = [];
 
   if (options.optional) {

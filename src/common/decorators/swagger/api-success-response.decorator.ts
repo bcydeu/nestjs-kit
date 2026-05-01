@@ -18,7 +18,7 @@ export function ApiSuccessResponse<T>(
   options?: {
     summary?: string;
     description?: string;
-    example?: any;
+    example?: unknown;
     isArray?: boolean;
     status?: number;
   },
@@ -78,7 +78,7 @@ export function ApiSuccessResponse<T>(
             },
           },
         ],
-        ...(example && { example: { status: 'success', data: example } }),
+        ...(example !== undefined ? { example: { status: 'success', data: example } } : {}),
       },
     }),
   );

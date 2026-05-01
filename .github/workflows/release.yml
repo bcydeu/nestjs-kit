@@ -29,11 +29,14 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
       - name: Build
         run: npm run build
-
-      - name: Canary (decorator metadata)
-        run: npm run canary
 
       - name: Create Release PR or Publish
         uses: changesets/action@v1
