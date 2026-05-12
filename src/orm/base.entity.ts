@@ -1,10 +1,6 @@
 import { DateValidator, NumberValidator } from '../common';
 import { Entity, Filter, PrimaryKey, Property } from '@mikro-orm/core';
-import {
-  ApiHideProperty,
-  ApiProperty,
-  ApiPropertyOptional,
-} from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 
 @Entity({ abstract: true })
@@ -21,7 +17,7 @@ export class BaseEntity {
     example: 1,
   })
   @NumberValidator({ positive: true })
-  @PrimaryKey({ autoincrement: true })
+  @PrimaryKey({ type: 'number', autoincrement: true })
   @Expose()
   id!: number;
 

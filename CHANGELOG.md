@@ -1,5 +1,13 @@
 # @yunhak/nestjs-kit
 
+## 0.1.2
+
+### Patch Changes
+
+- fix(orm): `BaseEntity.id`에 `type: 'number'` 명시.
+
+  tsup(esbuild) 번들 후 reflect-metadata가 사라져 MikroORM discovery 시점에 "Please provide either 'type' or 'entity' attribute in BaseEntity.id" 에러가 발생하던 문제 수정. 다른 필드들(createdAt/updatedAt/deletedAt)은 이미 `type` 명시되어 있어 영향 없음.
+
 ## 0.1.1
 
 ### Patch Changes
