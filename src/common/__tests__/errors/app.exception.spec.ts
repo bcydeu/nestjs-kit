@@ -40,15 +40,15 @@ describe('AppException', () => {
     expect((ex.getResponse() as { uiMessage: string }).uiMessage).toBe(UiMessages.BAD_REQUEST);
   });
 
-  it('도메인 메시지(EMAIL_ALREADY_EXISTS 등)도 동일하게 동작한다', () => {
+  it('CONFLICT 상태/메시지도 동일한 계약을 만족한다', () => {
     const ex = new AppException(
-      UiMessages.EMAIL_ALREADY_EXISTS,
+      UiMessages.CONFLICT,
       'duplicate email: foo@bar.com',
       HttpStatus.CONFLICT,
     );
 
-    expect(ex.uiMessage).toBe(UiMessages.EMAIL_ALREADY_EXISTS);
+    expect(ex.uiMessage).toBe(UiMessages.CONFLICT);
     expect(ex.getStatus()).toBe(HttpStatus.CONFLICT);
-    expect(ex.getResponse()).toEqual({ uiMessage: UiMessages.EMAIL_ALREADY_EXISTS });
+    expect(ex.getResponse()).toEqual({ uiMessage: UiMessages.CONFLICT });
   });
 });

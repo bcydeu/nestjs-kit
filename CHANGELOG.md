@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- BREAKING: 두 가지 큰 변경.
+- BREAKING: 여러 가지 큰 변경.
 
   ### 1. `/orm/pool` 서브패스 제거
 
@@ -19,6 +19,16 @@
   - ESM(`.mjs`) 출력 제거 — CJS 단일 포맷. NestJS 앱은 거의 모두 CJS라 영향 미미.
   - `package.json#exports`의 `import` 필드 제거, `default`로 통일.
   - `tsup`, `tsup.config.ts` 제거. `tsconfig.build.json` 추가.
+
+  ### 3. `CommonErrorMessages` 제거 — `UiMessages`로 통합
+
+  Swagger 데코레이터(`ApiCommonErrorResponses`)와 런타임 응답 필터(`AllCatchExceptionFilter`)가 각각 다른 메시지 상수를 들고 있어 단일 진실원천 위반이었음. `CommonErrorMessages` 삭제하고 `UiMessages`만 사용하도록 통일. `UiMessages`에 `SERVICE_UNAVAILABLE` 추가.
+  - `import { CommonErrorMessages } from '@yunhak/nestjs-kit/common'` → 사용 중이었다면 `UiMessages`로 대체
+
+  ### 4. 도메인 메시지 제거 (`EMAIL_ALREADY_EXISTS`, `INVALID_CREDENTIALS`)
+
+  라이브러리는 표준 HTTP 메시지만 제공. 도메인 메시지는 사용처 앱이 자체 enum으로 관리하는 게 자연스러워 제거.
+  - `UiMessages.EMAIL_ALREADY_EXISTS`, `UiMessages.INVALID_CREDENTIALS` 참조하던 코드는 앱 측에 자체 메시지 enum을 정의해 사용
 
 ## 0.1.2
 
