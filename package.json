@@ -6,7 +6,7 @@
   "author": "JOOYUNHAK",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JOOYUNHAK/nestjs-kit.git"
+    "url": "https://github.com/bcydeu/nestjs-kit.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
