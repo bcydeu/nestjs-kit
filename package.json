@@ -1,6 +1,6 @@
 {
   "name": "@yunhak/nestjs-kit",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "NestJS 공용 인프라 모음 — 개인 프로젝트용 스타터 키트",
   "license": "MIT",
   "author": "JOOYUNHAK",
@@ -15,38 +15,27 @@
   "exports": {
     "./common": {
       "types": "./dist/common/index.d.ts",
-      "require": "./dist/common/index.js",
-      "import": "./dist/common/index.mjs"
+      "default": "./dist/common/index.js"
     },
     "./security": {
       "types": "./dist/security/index.d.ts",
-      "require": "./dist/security/index.js",
-      "import": "./dist/security/index.mjs"
+      "default": "./dist/security/index.js"
     },
     "./config": {
       "types": "./dist/config/index.d.ts",
-      "require": "./dist/config/index.js",
-      "import": "./dist/config/index.mjs"
+      "default": "./dist/config/index.js"
     },
     "./email": {
       "types": "./dist/email/index.d.ts",
-      "require": "./dist/email/index.js",
-      "import": "./dist/email/index.mjs"
+      "default": "./dist/email/index.js"
     },
     "./logging": {
       "types": "./dist/logging/index.d.ts",
-      "require": "./dist/logging/index.js",
-      "import": "./dist/logging/index.mjs"
+      "default": "./dist/logging/index.js"
     },
     "./orm": {
       "types": "./dist/orm/index.d.ts",
-      "require": "./dist/orm/index.js",
-      "import": "./dist/orm/index.mjs"
-    },
-    "./orm/pool": {
-      "types": "./dist/orm/pool/index.d.ts",
-      "require": "./dist/orm/pool/index.js",
-      "import": "./dist/orm/pool/index.mjs"
+      "default": "./dist/orm/index.js"
     }
   },
   "files": [
@@ -54,7 +43,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsup",
+    "build": "tsc -p tsconfig.build.json",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
     "test": "jest",
@@ -98,9 +87,6 @@
     "@sentry/nestjs": {
       "optional": true
     },
-    "@willsoto/nestjs-prometheus": {
-      "optional": true
-    },
     "resend": {
       "optional": true
     }
@@ -125,7 +111,6 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
     "@types/passport-jwt": "^4.0.1",
-    "@willsoto/nestjs-prometheus": "^6.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.4",
     "eslint": "^9.18.0",
@@ -136,12 +121,10 @@
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "prettier": "^3.4.2",
-    "prom-client": "^15.1.3",
     "reflect-metadata": "^0.2.2",
     "resend": "^4.8.0",
     "rxjs": "^7.8.2",
     "ts-jest": "^29.2.5",
-    "tsup": "^8.3.5",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
   },

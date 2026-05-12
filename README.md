@@ -21,7 +21,6 @@ npm install @yunhak/nestjs-kit
 | `@yunhak/nestjs-kit/email`    | `EmailModule.forRootAsync` + Resend 전략                            | optional: `resend`                                                 |
 | `@yunhak/nestjs-kit/logging`  | `SentryLoggerModule` (lazy Sentry loader)                           | optional: `@sentry/nestjs`                                         |
 | `@yunhak/nestjs-kit/orm`      | `BaseEntity`, `getRootAsyncOptions`                                 | `@mikro-orm/core`, `@mikro-orm/nestjs`, `@mikro-orm/postgresql` 등 |
-| `@yunhak/nestjs-kit/orm/pool` | DB Pool 모니터                                                      | optional: `@willsoto/nestjs-prometheus`, `prom-client`             |
 
 ## Usage
 
@@ -92,16 +91,15 @@ import { SentryLoggerModule } from '@yunhak/nestjs-kit/logging';
 export class AppModule {}
 ```
 
-### `/orm` + `/orm/pool` — MikroORM 헬퍼 + Pool 모니터
+### `/orm` — MikroORM 헬퍼
 
 ```bash
-npm install @mikro-orm/core @mikro-orm/nestjs @mikro-orm/postgresql @willsoto/nestjs-prometheus prom-client
+npm install @mikro-orm/core @mikro-orm/nestjs @mikro-orm/postgresql
 ```
 
 ```ts
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { getRootAsyncOptions } from '@yunhak/nestjs-kit/orm';
-import { PoolMonitorModule } from '@yunhak/nestjs-kit/orm/pool';
 
 @Module({
   imports: [
@@ -110,7 +108,6 @@ import { PoolMonitorModule } from '@yunhak/nestjs-kit/orm/pool';
         /* ... */
       }),
     ),
-    PoolMonitorModule,
   ],
 })
 export class AppModule {}
@@ -143,7 +140,7 @@ npm run typecheck     # tsc --noEmit
 npm test              # jest
 npm run lint          # eslint (변경 파일은 commit hook에서 자동 처리됨)
 npm run format:check  # prettier --check
-npm run build         # tsup (dual CJS/ESM + d.ts)
+npm run build         # tsc (CJS + d.ts)
 ```
 
 ## Release

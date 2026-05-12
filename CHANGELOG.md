@@ -1,5 +1,25 @@
 # @yunhak/nestjs-kit
 
+## 0.2.0
+
+### Minor Changes
+
+- BREAKING: 두 가지 큰 변경.
+
+  ### 1. `/orm/pool` 서브패스 제거
+
+  prometheus 기반 DB 풀 모니터링 모듈(`PoolMonitorModule`, `PoolMonitorService`, `PoolMetricsService`)을 제거. setup이 복잡하고 유지보수 부담이 커서 라이브러리에서 제외. 사용 측에서 직접 구현하거나 `@willsoto/nestjs-prometheus` 등으로 자체 구성할 것.
+  - `@yunhak/nestjs-kit/orm/pool` import 제거 필요
+  - `@willsoto/nestjs-prometheus`, `prom-client` peer 의존성 제거
+  - `OrmPoolOptions`(DB 연결풀 min/max 등)는 `mikro-orm.helper.ts`에서 계속 사용되므로 유지
+
+  ### 2. 빌드 도구: tsup → tsc
+
+  NestJS 생태계는 reflect-metadata 의존이 강한데, esbuild 기반 tsup은 `emitDecoratorMetadata`를 honor하지 않아 BaseEntity처럼 데코레이터 메타데이터에 의존하는 클래스에서 함정이 자주 발생. tsc로 전환해 metadata가 정상 emit되도록 함.
+  - ESM(`.mjs`) 출력 제거 — CJS 단일 포맷. NestJS 앱은 거의 모두 CJS라 영향 미미.
+  - `package.json#exports`의 `import` 필드 제거, `default`로 통일.
+  - `tsup`, `tsup.config.ts` 제거. `tsconfig.build.json` 추가.
+
 ## 0.1.2
 
 ### Patch Changes
