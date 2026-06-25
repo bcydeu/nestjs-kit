@@ -1,15 +1,7 @@
-import {
-  Inject,
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-} from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { EmailService } from '../email.service';
 import { EmailPayload } from '../email.type';
-import {
-  RESEND_STRATEGY_OPTIONS,
-  ResendStrategyOptions,
-} from '../email.tokens';
+import { RESEND_STRATEGY_OPTIONS, type ResendStrategyOptions } from '../email.tokens';
 
 // resend는 optional peer. 실제로 Strategy를 인스턴스화할 때 require해서
 // 미설치 환경의 소비처가 kit/email 서브패스를 import만 해도 되도록 허용한다.
@@ -36,9 +28,7 @@ export class ResendEmailStrategy implements EmailService {
   private readonly from: string;
   private readonly logger = new Logger(ResendEmailStrategy.name);
 
-  constructor(
-    @Inject(RESEND_STRATEGY_OPTIONS) options: ResendStrategyOptions,
-  ) {
+  constructor(@Inject(RESEND_STRATEGY_OPTIONS) options: ResendStrategyOptions) {
     const Resend = loadResend();
     this.resend = new Resend(options.apiKey);
     this.from = options.from;
@@ -58,15 +48,13 @@ export class ResendEmailStrategy implements EmailService {
         payload,
       });
 
-      throw new InternalServerErrorException(
-        'Failed to send email via Resend API',
-      );
+      throw new InternalServerErrorException('Failed to send email via Resend API');
     }
   }
 
   async sendBatch(payloads: EmailPayload[]): Promise<void> {
     try {
-      const emails = payloads.map(payload => ({
+      const emails = payloads.map((payload) => ({
         from: payload.from ?? this.from,
         to: payload.to,
         subject: payload.subject,
@@ -79,9 +67,7 @@ export class ResendEmailStrategy implements EmailService {
         payloads,
       });
 
-      throw new InternalServerErrorException(
-        'Failed to send batch emails via Resend API',
-      );
+      throw new InternalServerErrorException('Failed to send batch emails via Resend API');
     }
   }
 }

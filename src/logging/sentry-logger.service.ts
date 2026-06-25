@@ -6,7 +6,7 @@ import { loadSentry } from './sentry.loader';
 import {
   DEFAULT_IGNORED_CONTEXTS,
   SENTRY_LOGGER_OPTIONS,
-  SentryLoggerOptions,
+  type SentryLoggerOptions,
 } from './sentry-logger.tokens';
 
 @Injectable({ scope: Scope.TRANSIENT })

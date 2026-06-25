@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 import { AppException, UiMessages } from '../common';
-import { JWT_USER_OPTIONS, JwtUserOptions } from './security.tokens';
+import { JWT_USER_OPTIONS, type JwtUserOptions } from './security.tokens';
 
 export interface JwtUserPayload {
   sub: number;
@@ -24,11 +24,7 @@ export class JwtUserStrategy extends PassportStrategy(Strategy, 'jwt-user') {
 
   validate({ sub }: JwtUserPayload) {
     if (!sub) {
-      throw new AppException(
-        UiMessages.UNAUTHORIZED,
-        'Not found sub',
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new AppException(UiMessages.UNAUTHORIZED, 'Not found sub', HttpStatus.UNAUTHORIZED);
     }
 
     return { userId: sub };

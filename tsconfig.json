@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "nodenext",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -10,12 +10,13 @@
     "sourceMap": true,
     "outDir": "./dist",
     "skipLibCheck": true,
+    "isolatedModules": true,
     "strict": true,
     "strictPropertyInitialization": false,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "lib": ["ES2023"]
   },
