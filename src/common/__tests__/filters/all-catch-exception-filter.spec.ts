@@ -1,8 +1,4 @@
-import {
-  AllCatchExceptionFilter,
-  AppException,
-  UiMessages,
-} from '../..';
+import { AllCatchExceptionFilter, AppException, UiMessages } from '../..';
 import { ArgumentsHost, HttpStatus, Logger } from '@nestjs/common';
 
 describe('AllCatchExceptionFilter Unit Test', () => {
@@ -10,14 +6,14 @@ describe('AllCatchExceptionFilter Unit Test', () => {
   let mockHost: ArgumentsHost;
 
   const mockResponse = {
-    status: jest.fn().mockReturnThis(),
-    json: jest.fn().mockReturnThis(),
+    status: vi.fn().mockReturnThis(),
+    json: vi.fn().mockReturnThis(),
   } as any;
 
   beforeEach(() => {
     filter = new AllCatchExceptionFilter();
-    jest.spyOn(Logger.prototype, 'warn').mockImplementation(() => {});
-    jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+    vi.spyOn(Logger.prototype, 'warn').mockImplementation(() => {});
+    vi.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
 
     mockHost = {
       switchToHttp: () => ({
@@ -28,11 +24,7 @@ describe('AllCatchExceptionFilter Unit Test', () => {
 
   it('HttpException 기반 에러인 경우 반환 데이터 확인', () => {
     // given
-    const error = new AppException(
-      UiMessages.BAD_REQUEST,
-      'bad request',
-      HttpStatus.BAD_REQUEST,
-    );
+    const error = new AppException(UiMessages.BAD_REQUEST, 'bad request', HttpStatus.BAD_REQUEST);
 
     // when
     filter.catch(error, mockHost);
@@ -53,9 +45,7 @@ describe('AllCatchExceptionFilter Unit Test', () => {
     filter.catch(error, mockHost);
 
     // then
-    expect(mockResponse.status).toHaveBeenCalledWith(
-      HttpStatus.INTERNAL_SERVER_ERROR,
-    );
+    expect(mockResponse.status).toHaveBeenCalledWith(HttpStatus.INTERNAL_SERVER_ERROR);
     expect(mockResponse.json).toHaveBeenCalledWith({
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       message: UiMessages.INTERNAL_SERVER_ERROR,

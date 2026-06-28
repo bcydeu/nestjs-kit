@@ -1,28 +1,22 @@
-const sendMock = jest.fn();
-const batchSendMock = jest.fn();
-const ResendCtorMock = jest.fn().mockImplementation(() => ({
-  emails: { send: sendMock },
-  batch: { send: batchSendMock },
-}));
-
-jest.mock('resend', () => ({ Resend: ResendCtorMock }));
-
 import { ResendEmailStrategy } from '../strategy/resend-email.strategy';
 import { EmailPayload } from '../email.type';
 
+// strategy는 resend 클라이언트를 주입받으므로, 모킹 없이 stub 객체만 넣으면 된다.
 describe('ResendEmailStrategy', () => {
   let strategy: ResendEmailStrategy;
+  const sendMock = vi.fn();
+  const batchSendMock = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    strategy = new ResendEmailStrategy({
-      apiKey: 'test-api-key',
-      from: 'default@example.com',
-    });
-  });
-
-  it('Resend 인스턴스를 주입받은 apiKey로 생성한다', () => {
-    expect(ResendCtorMock).toHaveBeenCalledWith('test-api-key');
+    vi.clearAllMocks();
+    const stubResend = {
+      emails: { send: sendMock },
+      batch: { send: batchSendMock },
+    };
+    strategy = new ResendEmailStrategy(
+      { apiKey: 'test-api-key', from: 'default@example.com' },
+      stubResend,
+    );
   });
 
   it('send: payload.from이 없으면 기본 from 값을 사용한다', async () => {
@@ -49,9 +43,7 @@ describe('ResendEmailStrategy', () => {
       html: '<p>hi</p>',
     });
 
-    expect(sendMock).toHaveBeenCalledWith(
-      expect.objectContaining({ from: 'custom@example.com' }),
-    );
+    expect(sendMock).toHaveBeenCalledWith(expect.objectContaining({ from: 'custom@example.com' }));
   });
 
   it('send 중 에러 발생 시 InternalServerErrorException을 던진다', async () => {

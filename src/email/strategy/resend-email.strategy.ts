@@ -1,36 +1,26 @@
 import { Inject, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { EmailService } from '../email.service';
 import { EmailPayload } from '../email.type';
-import { RESEND_STRATEGY_OPTIONS, type ResendStrategyOptions } from '../email.tokens';
-
-// resend는 optional peer. 실제로 Strategy를 인스턴스화할 때 require해서
-// 미설치 환경의 소비처가 kit/email 서브패스를 import만 해도 되도록 허용한다.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ResendCtor = new (apiKey: string) => any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ResendInstance = any;
-
-function loadResend(): ResendCtor {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const mod = require('resend');
-    return mod.Resend as ResendCtor;
-  } catch {
-    throw new Error(
-      '`resend` 패키지가 설치되어 있지 않습니다. `npm install resend`로 설치 후 사용하세요.',
-    );
-  }
-}
+import {
+  RESEND_CLIENT,
+  RESEND_STRATEGY_OPTIONS,
+  type ResendStrategyOptions,
+} from '../email.tokens';
 
 @Injectable()
 export class ResendEmailStrategy implements EmailService {
-  private readonly resend: ResendInstance;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private readonly resend: any;
   private readonly from: string;
   private readonly logger = new Logger(ResendEmailStrategy.name);
 
-  constructor(@Inject(RESEND_STRATEGY_OPTIONS) options: ResendStrategyOptions) {
-    const Resend = loadResend();
-    this.resend = new Resend(options.apiKey);
+  constructor(
+    @Inject(RESEND_STRATEGY_OPTIONS) options: ResendStrategyOptions,
+    // resend 클라이언트는 EmailModule이 생성해 주입한다(테스트에서는 stub 주입).
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    @Inject(RESEND_CLIENT) resend: any,
+  ) {
+    this.resend = resend;
     this.from = options.from;
   }
 

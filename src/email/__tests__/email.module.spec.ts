@@ -1,17 +1,6 @@
-jest.mock('resend', () => ({
-  Resend: jest.fn().mockImplementation(() => ({
-    emails: { send: jest.fn() },
-    batch: { send: jest.fn() },
-  })),
-}));
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { EmailModule } from '../email.module';
-import {
-  EMAIL_CLIENT,
-  RESEND_STRATEGY_OPTIONS,
-  ResendStrategyOptions,
-} from '../email.tokens';
+import { EMAIL_CLIENT, RESEND_STRATEGY_OPTIONS, ResendStrategyOptions } from '../email.tokens';
 import { ResendEmailStrategy } from '../strategy/resend-email.strategy';
 
 describe('EmailModule.forRootAsync', () => {
@@ -76,7 +65,7 @@ describe('EmailModule.forRootAsync', () => {
 
     // RESEND_STRATEGY_OPTIONS provider가 inject를 보유하는지 검사
     const optionsProvider = (mod.providers ?? []).find(
-      p =>
+      (p) =>
         typeof p === 'object' &&
         p !== null &&
         'provide' in p &&

@@ -1,5 +1,5 @@
 import { DateValidator, NumberValidator } from '../common';
-import { Entity, Filter, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, Filter, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 import { ApiHideProperty, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 

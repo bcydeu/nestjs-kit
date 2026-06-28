@@ -1,8 +1,4 @@
-import {
-  defineConfig,
-  PostgreSqlDriver,
-  UnderscoreNamingStrategy,
-} from '@mikro-orm/postgresql';
+import { defineConfig, PostgreSqlDriver, UnderscoreNamingStrategy } from '@mikro-orm/postgresql';
 import { ConfigService } from '@nestjs/config';
 import { MikroOrmModuleAsyncOptions } from '@mikro-orm/nestjs';
 import { Environment } from '../common';
@@ -33,8 +29,6 @@ const getAppOrmConfig = (config: ConfigService) => {
   return defineConfig({
     autoJoinOneToOneOwner: false,
     autoJoinRefsForFilters: false,
-    validate: true,
-    strict: false,
     validateRequired: true,
     forceUtcTimezone: false,
     forceUndefined: false,
@@ -55,7 +49,6 @@ const getAppOrmConfig = (config: ConfigService) => {
       min: pool.min,
       max: pool.max,
       idleTimeoutMillis: pool.idleTimeoutMillis,
-      acquireTimeoutMillis: pool.acquireTimeoutMillis,
     },
   });
 };

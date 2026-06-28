@@ -22,11 +22,12 @@ const NOOP_SENTRY: SentryLike = {
 
 let cached: SentryLike | null = null;
 
-export function loadSentry(): SentryLike {
+// require 인자는 테스트 주입을 위해 노출한다
+// (vitest는 native require() 모킹을 지원하지 않으므로 로더 함수 경계에서 주입).
+export function loadSentry(req: (id: string) => unknown = require): SentryLike {
   if (cached) return cached;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    cached = require('@sentry/nestjs') as SentryLike;
+    cached = req('@sentry/nestjs') as SentryLike;
   } catch {
     cached = NOOP_SENTRY;
   }

@@ -2,9 +2,10 @@
 // NestJS ConsoleLogger override 시그니처가 message:any 를 강제하므로 파일 단위 허용.
 
 import { ConsoleLogger, Inject, Injectable, Optional, Scope } from '@nestjs/common';
-import { loadSentry } from './sentry.loader';
+import { type SentryLike } from './sentry.loader';
 import {
   DEFAULT_IGNORED_CONTEXTS,
+  SENTRY_CLIENT,
   SENTRY_LOGGER_OPTIONS,
   type SentryLoggerOptions,
 } from './sentry-logger.tokens';
@@ -13,14 +14,17 @@ import {
 export class SentryLoggerService extends ConsoleLogger {
   private readonly ignoredContexts: Set<string>;
   private readonly isProductionFn: () => boolean;
-  private readonly sentry = loadSentry();
+  private readonly sentry: SentryLike;
 
   constructor(
+    // sentry 클라이언트는 SentryLoggerModule이 생성해 주입한다(테스트에서는 stub 주입).
+    @Inject(SENTRY_CLIENT) sentry: SentryLike,
     @Optional()
     @Inject(SENTRY_LOGGER_OPTIONS)
     options?: SentryLoggerOptions,
   ) {
     super();
+    this.sentry = sentry;
     this.ignoredContexts = new Set(options?.ignoredContexts ?? DEFAULT_IGNORED_CONTEXTS);
     this.isProductionFn = options?.isProduction ?? (() => process.env.NODE_ENV === 'production');
   }

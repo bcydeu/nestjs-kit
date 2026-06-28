@@ -2,7 +2,7 @@ import { throttleAsyncOptions } from '../throttle.helper';
 
 describe('throttleAsyncOptions', () => {
   it('imports, inject, useFactory를 그대로 전달한다', () => {
-    const factory = jest.fn().mockResolvedValue({ ttl: 60000, limit: 10 });
+    const factory = vi.fn().mockResolvedValue({ ttl: 60000, limit: 10 });
     const opts = throttleAsyncOptions({
       imports: [] as never,
       inject: ['TOKEN'],
@@ -35,7 +35,7 @@ describe('throttleAsyncOptions', () => {
   });
 
   it('factory에 주입된 인자들이 그대로 전달된다', async () => {
-    const factory = jest.fn().mockResolvedValue({ ttl: 1, limit: 1 });
+    const factory = vi.fn().mockResolvedValue({ ttl: 1, limit: 1 });
     const opts = throttleAsyncOptions({ useFactory: factory });
 
     await (opts.useFactory as (...args: unknown[]) => Promise<any>)('a', 'b', 3);

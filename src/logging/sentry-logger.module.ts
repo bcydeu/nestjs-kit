@@ -1,12 +1,17 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { SentryLoggerService } from './sentry-logger.service';
-import {
-  SENTRY_LOGGER_OPTIONS,
-  SentryLoggerOptions,
-} from './sentry-logger.tokens';
+import { loadSentry } from './sentry.loader';
+import { SENTRY_CLIENT, SENTRY_LOGGER_OPTIONS, SentryLoggerOptions } from './sentry-logger.tokens';
+
+// sentry 클라이언트 로드(= optional peer require)를 모듈로 모은다.
+// service는 이 인스턴스를 주입받기만 하므로 테스트에서 stub 주입이 쉬워진다.
+const sentryClientProvider: Provider = {
+  provide: SENTRY_CLIENT,
+  useFactory: () => loadSentry(),
+};
 
 @Module({
-  providers: [SentryLoggerService],
+  providers: [sentryClientProvider, SentryLoggerService],
   exports: [SentryLoggerService],
 })
 export class SentryLoggerModule {
@@ -20,6 +25,7 @@ export class SentryLoggerModule {
       global: true,
       providers: [
         { provide: SENTRY_LOGGER_OPTIONS, useValue: options },
+        sentryClientProvider,
         SentryLoggerService,
       ],
       exports: [SentryLoggerService],

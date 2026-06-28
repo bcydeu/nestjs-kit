@@ -29,7 +29,7 @@ describe('getRootAsyncOptions', () => {
     };
 
     const configService = {
-      getOrThrow: jest.fn().mockReturnValue(ormOptions),
+      getOrThrow: vi.fn().mockReturnValue(ormOptions),
     } as unknown as ConfigService;
 
     const options = getRootAsyncOptions();
@@ -55,12 +55,10 @@ describe('getRootAsyncOptions', () => {
       pool: { min: 1, max: 2, idleTimeoutMillis: 3, acquireTimeoutMillis: 4 },
     };
     const configService = {
-      getOrThrow: jest.fn().mockReturnValue(ormOptions),
+      getOrThrow: vi.fn().mockReturnValue(ormOptions),
     } as unknown as ConfigService;
 
-    const result = (
-      getRootAsyncOptions().useFactory as (c: ConfigService) => any
-    )(configService);
+    const result = (getRootAsyncOptions().useFactory as (c: ConfigService) => any)(configService);
 
     expect(result.driverOptions.connection.statement_timeout).toBe(42);
   });
@@ -70,7 +68,7 @@ describe('getRootAsyncOptions', () => {
     process.env.NODE_ENV = 'production';
 
     const configService = {
-      getOrThrow: jest.fn().mockReturnValue({
+      getOrThrow: vi.fn().mockReturnValue({
         dbName: 'd',
         host: 'h',
         port: 1,
@@ -81,9 +79,7 @@ describe('getRootAsyncOptions', () => {
       }),
     } as unknown as ConfigService;
 
-    const result = (
-      getRootAsyncOptions().useFactory as (c: ConfigService) => any
-    )(configService);
+    const result = (getRootAsyncOptions().useFactory as (c: ConfigService) => any)(configService);
 
     expect(result.debug).toBe(false);
 

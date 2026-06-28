@@ -1,4 +1,4 @@
-import { Entity, Property } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/decorators/legacy';
 import { classToPlain, plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 import { BaseEntity } from '../base.entity';
