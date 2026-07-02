@@ -23,7 +23,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # MikroORM v7 요구사항 (Node 22.17+ — require(esm) 지원)
+          node-version: 22
           registry-url: https://registry.npmjs.org
 
       - name: Install
