@@ -40,10 +40,11 @@ const getAppOrmConfig = (config: ConfigService) => {
     user,
     password,
     debug: process.env.NODE_ENV === Environment.PRODUCTION ? false : true,
+    // v7(kysely)은 driverOptions를 pg Pool 설정에 그대로 스프레드한다.
+    // v6(knex)식 connection 중첩을 쓰면 pg가 `connection` 키를 Connection
+    // 인스턴스로 오인해 "con.connect is not a function"으로 터진다.
     driverOptions: {
-      connection: {
-        statement_timeout: driverOptions.connection.statementTimeout,
-      },
+      statement_timeout: driverOptions.connection.statementTimeout,
     },
     pool: {
       min: pool.min,

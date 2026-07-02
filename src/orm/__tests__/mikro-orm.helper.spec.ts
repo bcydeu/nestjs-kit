@@ -24,7 +24,6 @@ describe('getRootAsyncOptions', () => {
         min: 2,
         max: 10,
         idleTimeoutMillis: 5000,
-        acquireTimeoutMillis: 10000,
       },
     };
 
@@ -44,7 +43,7 @@ describe('getRootAsyncOptions', () => {
     expect(result.pool).toMatchObject({ min: 2, max: 10 });
   });
 
-  it('driverOptions.connection.statement_timeout으로 env 키를 snake_case 매핑한다', () => {
+  it('statementTimeout을 driverOptions 최상위 statement_timeout으로 매핑한다 (v7 kysely: pg Pool에 그대로 스프레드)', () => {
     const ormOptions: OrmOptions = {
       dbName: 'd',
       host: 'h',
@@ -52,7 +51,7 @@ describe('getRootAsyncOptions', () => {
       user: 'u',
       password: 'p',
       driverOptions: { connection: { statementTimeout: 42 } },
-      pool: { min: 1, max: 2, idleTimeoutMillis: 3, acquireTimeoutMillis: 4 },
+      pool: { min: 1, max: 2, idleTimeoutMillis: 3 },
     };
     const configService = {
       getOrThrow: vi.fn().mockReturnValue(ormOptions),
@@ -60,7 +59,9 @@ describe('getRootAsyncOptions', () => {
 
     const result = (getRootAsyncOptions().useFactory as (c: ConfigService) => any)(configService);
 
-    expect(result.driverOptions.connection.statement_timeout).toBe(42);
+    expect(result.driverOptions.statement_timeout).toBe(42);
+    // pg가 Connection 인스턴스 주입 옵션으로 오인하는 connection 키가 없어야 한다.
+    expect(result.driverOptions.connection).toBeUndefined();
   });
 
   it('NODE_ENV=production이면 debug=false', () => {
@@ -75,7 +76,7 @@ describe('getRootAsyncOptions', () => {
         user: 'u',
         password: 'p',
         driverOptions: { connection: { statementTimeout: 1 } },
-        pool: { min: 1, max: 2, idleTimeoutMillis: 3, acquireTimeoutMillis: 4 },
+        pool: { min: 1, max: 2, idleTimeoutMillis: 3 },
       }),
     } as unknown as ConfigService;
 
