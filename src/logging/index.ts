@@ -1,4 +1,7 @@
-export * from './sentry-logger.module';
-export * from './sentry-logger.service';
-export * from './sentry-logger.tokens';
-export type { SentryLike } from './sentry.loader';
+export * from './logger.module';
+export * from './logger.port';
+export { PinoAppLogger } from './pino-app-logger';
+export * from './logger.type';
+export { buildPinoParams } from './logger.defaults';
+export { loadNestjsPino, canResolvePinoPretty } from './pino.loader';
+export type { NestjsPinoModule } from './pino.loader';
