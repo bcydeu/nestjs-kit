@@ -8,13 +8,9 @@ export interface BooleanValidatorOptions {
   each?: boolean;
 }
 
-export type BooleanValidatorType = (
-  opts?: BooleanValidatorOptions,
-) => PropertyDecorator;
+export type BooleanValidatorType = (opts?: BooleanValidatorOptions) => PropertyDecorator;
 
-export function BooleanValidator(
-  options: BooleanValidatorOptions = {},
-): PropertyDecorator {
+export function BooleanValidator(options: BooleanValidatorOptions = {}): PropertyDecorator {
   const decorators: PropertyDecorator[] = [];
 
   if (options.optional) {
@@ -37,9 +33,7 @@ export function BooleanValidator(
   const eachOption = options.each ? true : false;
   const message =
     options.message ??
-    (eachOption
-      ? '$property each elements must be a boolean'
-      : '$property must be a boolean');
+    (eachOption ? '$property each elements must be a boolean' : '$property must be a boolean');
 
   decorators.push(IsBoolean({ each: eachOption, message }));
 

@@ -14,18 +14,14 @@ describe('SecurityModule.forRootAsync', () => {
 
     expect(mod.module).toBe(SecurityModule);
     expect(mod.global).toBe(true);
-    expect(mod.exports).toEqual(
-      expect.arrayContaining([JwtUserStrategy, JwtUserGuard]),
-    );
+    expect(mod.exports).toEqual(expect.arrayContaining([JwtUserStrategy, JwtUserGuard]));
   });
 
   it('factory 결과가 JWT_USER_OPTIONS로 주입되고 JwtModule도 구성된다', async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          load: [
-            () => ({ jwt: { secret: 'test-secret', expiresIn: '1h' } }),
-          ],
+          load: [() => ({ jwt: { secret: 'test-secret', expiresIn: '1h' } })],
           isGlobal: true,
           ignoreEnvFile: true,
         }),

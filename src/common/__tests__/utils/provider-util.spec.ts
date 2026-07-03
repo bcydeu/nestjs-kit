@@ -8,10 +8,7 @@ describe('ProviderUtil Unit Test', () => {
       const providerToken = Symbol(TestProviderService.name);
 
       // when
-      const provider = createUseClassProvider(
-        providerToken,
-        TestProviderService,
-      );
+      const provider = createUseClassProvider(providerToken, TestProviderService);
 
       // then
       expect(provider).toStrictEqual({

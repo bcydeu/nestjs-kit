@@ -16,11 +16,7 @@ describe('JwtUserStrategy Unit Test', () => {
       falsySubs.forEach((sub: any) => {
         const result = () => strategy.validate({ sub });
         expect(result).toThrow(
-          new AppException(
-            UiMessages.UNAUTHORIZED,
-            `Not found sub`,
-            HttpStatus.UNAUTHORIZED,
-          ),
+          new AppException(UiMessages.UNAUTHORIZED, `Not found sub`, HttpStatus.UNAUTHORIZED),
         );
       });
     });

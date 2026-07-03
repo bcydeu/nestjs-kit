@@ -39,19 +39,16 @@ describe('BooleanValidator', () => {
   });
 
   describe('실패 케이스', () => {
-    it.each([123, 'foo', {}, []])(
-      '값이 %s인 경우 실패해야 한다.',
-      async (value: unknown) => {
-        // given
-        const dto = plainToInstance(TestDto, { value });
+    it.each([123, 'foo', {}, []])('값이 %s인 경우 실패해야 한다.', async (value: unknown) => {
+      // given
+      const dto = plainToInstance(TestDto, { value });
 
-        // when
-        const errors = await validate(dto);
+      // when
+      const errors = await validate(dto);
 
-        // then
-        expect(errors.length).toBeGreaterThan(0);
-        expect(errors[0].constraints).toHaveProperty('isBoolean');
-      },
-    );
+      // then
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].constraints).toHaveProperty('isBoolean');
+    });
   });
 });

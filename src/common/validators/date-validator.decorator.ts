@@ -8,13 +8,9 @@ export interface DateValidatorOptions {
   each?: boolean;
 }
 
-export type DateValidatorType = (
-  opts?: DateValidatorOptions,
-) => PropertyDecorator;
+export type DateValidatorType = (opts?: DateValidatorOptions) => PropertyDecorator;
 
-export function DateValidator(
-  options: DateValidatorOptions = {},
-): PropertyDecorator {
+export function DateValidator(options: DateValidatorOptions = {}): PropertyDecorator {
   const decorators: PropertyDecorator[] = [];
 
   // 1) optional 처리
@@ -34,9 +30,7 @@ export function DateValidator(
       each: eachOption,
       message:
         options.message ??
-        (eachOption
-          ? `$property each elements must be a Date`
-          : `$property must be a Date`),
+        (eachOption ? `$property each elements must be a Date` : `$property must be a Date`),
     }),
   );
 

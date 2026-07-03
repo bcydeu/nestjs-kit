@@ -1,8 +1,4 @@
-import {
-  ClassConstructor,
-  ClassTransformOptions,
-  plainToInstance,
-} from 'class-transformer';
+import { ClassConstructor, ClassTransformOptions, plainToInstance } from 'class-transformer';
 
 export function convertToInstance<T, V extends Partial<T>>(
   dtoClass: ClassConstructor<T>,

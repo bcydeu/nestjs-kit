@@ -1,13 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { Transform } from 'class-transformer';
-import {
-  IsNumber,
-  IsInt,
-  IsOptional,
-  Min,
-  Max,
-  IsNotEmpty,
-} from 'class-validator';
+import { IsNumber, IsInt, IsOptional, Min, Max, IsNotEmpty } from 'class-validator';
 
 export interface NumberValidatorOptions {
   optional?: boolean;
@@ -19,13 +12,9 @@ export interface NumberValidatorOptions {
   message?: string;
 }
 
-export type NumberValidatorType = (
-  opts?: NumberValidatorOptions,
-) => PropertyDecorator;
+export type NumberValidatorType = (opts?: NumberValidatorOptions) => PropertyDecorator;
 
-export function NumberValidator(
-  options: NumberValidatorOptions = {},
-): PropertyDecorator {
+export function NumberValidator(options: NumberValidatorOptions = {}): PropertyDecorator {
   const decorators: PropertyDecorator[] = [];
 
   // 1) 문자열로 전달된 숫자를 Number 타입으로 변환

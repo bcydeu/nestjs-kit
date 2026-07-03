@@ -1,8 +1,4 @@
-import {
-  NestedValidator,
-  NumberValidator,
-  StringValidator,
-} from '../..';
+import { NestedValidator, NumberValidator, StringValidator } from '../..';
 import { validateSync } from 'class-validator';
 
 class NestedNumTestDTO {

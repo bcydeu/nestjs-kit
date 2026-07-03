@@ -1,11 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import {
-  IsArray,
-  ArrayMinSize,
-  ArrayMaxSize,
-  IsOptional,
-  IsNotEmpty,
-} from 'class-validator';
+import { IsArray, ArrayMinSize, ArrayMaxSize, IsOptional, IsNotEmpty } from 'class-validator';
 import { BooleanValidatorType } from './boolean-validator.decorator';
 import { DateValidatorType } from './date-validator.decorator';
 import {
@@ -23,9 +17,7 @@ export type ValidatorType =
   | BooleanValidatorType
   | NestedValidatorType;
 
-function isNestedValidator(
-  decorator: ValidatorType,
-): decorator is NestedValidatorType {
+function isNestedValidator(decorator: ValidatorType): decorator is NestedValidatorType {
   return decorator === NestedValidator;
 }
 
@@ -61,16 +53,12 @@ export function ArrayValidator<D extends ValidatorType>(
     decorators.push(IsNotEmpty());
   }
 
-  decorators.push(
-    IsArray({ message: options.message ?? `$property must be an array` }),
-  );
+  decorators.push(IsArray({ message: options.message ?? `$property must be an array` }));
 
   if (options.minItems) {
     decorators.push(
       ArrayMinSize(options.minItems, {
-        message:
-          options.message ??
-          `$property must contain at least ${options.minItems} items`,
+        message: options.message ?? `$property must contain at least ${options.minItems} items`,
       }),
     );
   }
@@ -78,9 +66,7 @@ export function ArrayValidator<D extends ValidatorType>(
   if (options.maxItems) {
     decorators.push(
       ArrayMaxSize(options.maxItems, {
-        message:
-          options.message ??
-          `$property must contain no more than ${options.maxItems} items`,
+        message: options.message ?? `$property must contain no more than ${options.maxItems} items`,
       }),
     );
   }

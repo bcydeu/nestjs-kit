@@ -1,8 +1,4 @@
-import {
-  NestedValidator,
-  NumberValidator,
-  StringValidator,
-} from '../../common';
+import { NestedValidator, NumberValidator, StringValidator } from '../../common';
 import { OrmDriverOptions } from './orm-driver.options';
 import { OrmPoolOptions } from './orm-pool.options';
 

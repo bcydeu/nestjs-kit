@@ -17,9 +17,7 @@ describe('ResponseInterceptor Unit Test', () => {
     } as any;
 
     // when
-    const result = await firstValueFrom(
-      interceptor.intercept({} as any, callHandler),
-    );
+    const result = await firstValueFrom(interceptor.intercept({} as any, callHandler));
 
     // then
     expect(result).toEqual({

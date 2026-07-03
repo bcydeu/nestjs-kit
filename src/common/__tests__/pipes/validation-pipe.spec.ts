@@ -9,9 +9,7 @@ import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { Expose } from 'class-transformer';
 
 describe('ValidationPipe Unit Test', () => {
-  const validationPipe: ValidationPipe = new ValidationPipe(
-    getValidationPipeOptions(),
-  );
+  const validationPipe: ValidationPipe = new ValidationPipe(getValidationPipeOptions());
 
   it('DTO에 정의되지 않은 프로퍼티는 변환 과정에서 제거된다..', async () => {
     // given
