@@ -1,5 +1,5 @@
 ---
-'@yunhak/nestjs-kit': major
+'@yunhak/nestjs-kit': minor
 ---
 
 로깅을 pino 기반 구조화 로깅으로 전환
