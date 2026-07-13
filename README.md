@@ -19,6 +19,7 @@ npm install @yunhak/nestjs-kit
 | `@yunhak/nestjs-kit/security` | `JwtUserGuard`, `JwtUserStrategy`, `@PublicApi()`, `SecurityModule` | `@nestjs/jwt`, `@nestjs/passport`, `passport`, `passport-jwt`      |
 | `@yunhak/nestjs-kit/config`   | options DTO + `createConfigValidator`                               | `@nestjs/config`                                                   |
 | `@yunhak/nestjs-kit/email`    | `EmailModule.forRootAsync` + Resend 전략                            | optional: `resend`                                                 |
+| `@yunhak/nestjs-kit/slack`    | `SlackModule.forRootAsync` + Incoming Webhook 전략                  | 없음 (전역 `fetch`, Node 22+)                                      |
 | `@yunhak/nestjs-kit/logging`  | `SentryLoggerModule` (lazy Sentry loader)                           | optional: `@sentry/nestjs`                                         |
 | `@yunhak/nestjs-kit/orm`      | `BaseEntity`, `getRootAsyncOptions`                                 | `@mikro-orm/core`, `@mikro-orm/nestjs`, `@mikro-orm/postgresql` 등 |
 
@@ -58,18 +59,90 @@ npm install resend
 ```
 
 ```ts
-import { EmailModule, ResendEmailStrategy } from '@yunhak/nestjs-kit/email';
+import { Module } from '@nestjs/common';
+import { EmailModule } from '@yunhak/nestjs-kit/email';
 
 @Module({
   imports: [
     EmailModule.forRootAsync({
       useFactory: () => ({
-        strategy: new ResendEmailStrategy({ apiKey: process.env.RESEND_API_KEY! }),
+        apiKey: process.env.RESEND_API_KEY!,
+        from: process.env.EMAIL_FROM!,
       }),
     }),
   ],
 })
 export class AppModule {}
+```
+
+```ts
+import { Inject, Injectable } from '@nestjs/common';
+import { EMAIL_CLIENT, EmailService } from '@yunhak/nestjs-kit/email';
+
+@Injectable()
+export class ReportService {
+  constructor(@Inject(EMAIL_CLIENT) private readonly email: EmailService) {}
+
+  async send() {
+    await this.email.send({
+      to: ['user@example.com'],
+      subject: '리포트',
+      html: '<p>본문</p>',
+    });
+  }
+}
+```
+
+### `/slack` — Incoming Webhook 전략
+
+peer 없이 전역 `fetch`로 동작한다(Node 22+). Slack에서 발급한 Incoming Webhook URL만 있으면 된다.
+
+```ts
+import { Module } from '@nestjs/common';
+import { SlackModule } from '@yunhak/nestjs-kit/slack';
+
+@Module({
+  imports: [
+    SlackModule.forRootAsync({
+      useFactory: () => ({
+        webhookUrl: process.env.SLACK_WEBHOOK_URL!,
+        environment: process.env.NODE_ENV, // 선택: 에러 알림 헤더에 [env] 표시
+        username: 'ci-bot', // 선택: 기본 표시 이름
+        iconEmoji: ':rocket:', // 선택: 기본 아이콘
+      }),
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+```ts
+import { Inject, Injectable } from '@nestjs/common';
+import { SLACK_CLIENT, SlackService } from '@yunhak/nestjs-kit/slack';
+
+@Injectable()
+export class AlertService {
+  constructor(@Inject(SLACK_CLIENT) private readonly slack: SlackService) {}
+
+  // 한줄 알림
+  async ping() {
+    await this.slack.notify('배포 완료 :tada:');
+  }
+
+  // 에러 알림 — 레벨(color 바)·제목·스택·컨텍스트를 포매팅해 전송
+  async onError(err: unknown) {
+    await this.slack.sendError(err, {
+      level: 'error', // 'warn' | 'error' | 'fatal' — attachment color 바로 심각도 표현
+      title: '결제 처리 실패',
+      context: { path: '/pay', userId: 42 },
+    });
+  }
+
+  // 저수준 — blocks/channel 등 직접 제어
+  async rich() {
+    await this.slack.send({ text: 'fallback', blocks: [{ type: 'section' }], channel: '#alerts' });
+  }
+}
 ```
 
 ### `/logging` — Sentry 로거

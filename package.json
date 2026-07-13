@@ -29,6 +29,10 @@
       "types": "./dist/email/index.d.ts",
       "default": "./dist/email/index.js"
     },
+    "./slack": {
+      "types": "./dist/slack/index.d.ts",
+      "default": "./dist/slack/index.js"
+    },
     "./logging": {
       "types": "./dist/logging/index.d.ts",
       "default": "./dist/logging/index.js"
